@@ -1,0 +1,67 @@
+# Authentication Module – Implementation Notes (Asymmetric-Key: RSA with RS256 Algorithm)
+
+## 1. User Registration
+- Implementing user registration using `RegisterService`.
+- Checking duplicate usernames and emails.
+- Assigning the default `USER` role during registration.
+- Hashing passwords using BCrypt.
+- Using DTOs for request and response handling.
+- Managing database operations using `@Transactional`.
+
+## 2. User Login
+- Implementing login authentication using Spring Security.
+- Using `AuthenticationManager` and `DaoAuthenticationProvider`.
+- Loading user details through `CustomUserDetailsService`.
+- Verifying passwords using `PasswordEncoder`.
+- Generating JWT tokens after successful authentication.
+
+## 3. Role Management
+- Managing user roles using `RoleEntity` and `RoleRepository`.
+- Assigning roles such as `USER` and `ADMIN`.
+- Using role-based authorization.
+- Extracting authorities from JWT claims.
+
+## 4. JWT Authentication (Asymmetric – RSA)
+- Using asymmetric-key cryptography with the RS256 algorithm.
+- Using an RSA private key to sign JWT tokens.
+- Using the corresponding RSA public key to verify JWT tokens.
+- Using `NimbusJwtEncoder` for token generation.
+- Using `NimbusJwtDecoder` for token verification.
+- Configuring JWT issuer and expiration time.
+- Using stateless session management.
+
+## 5. Security Configuration
+- Configuring Spring Security using `SecurityFilterChain`.
+- Configuring `PasswordEncoder`.
+- Configuring `AuthenticationManager` and `DaoAuthenticationProvider`.
+- Allowing public access to registration and login endpoints.
+- Protecting other endpoints through JWT authentication.
+- Disabling CSRF for the stateless API.
+
+## 6. Global Exception Handling
+- Implementing global exception handling using `@RestControllerAdvice`.
+- Handling exceptions using `@ExceptionHandler`.
+- Creating custom exceptions for application-specific errors.
+- Returning structured error responses.
+- Handling validation errors and resource conflicts.
+
+## 7. Important Note – Environment Variables
+- Sensitive configuration information, such as RSA private keys and database credentials, should not be stored directly in `application.properties`.
+- Store the RSA private key and other sensitive values using environment variables or a secure secrets manager.
+- The RSA public key can be distributed to services that need to verify JWT tokens.
+- Access environment variables in Spring Boot using property placeholders, for example: `${JWT_PRIVATE_KEY}`.
+- Keep the private key secure and never expose it in a public GitHub repository.
+- Keep environment-specific configurations separate for development, testing, and production.
+
+## 8. Technologies & Libraries
+- Java
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL
+- JWT (Nimbus JOSE + JWT)
+- RSA (Public Key & Private Key)
+- RS256
+- BCrypt
+- Maven
